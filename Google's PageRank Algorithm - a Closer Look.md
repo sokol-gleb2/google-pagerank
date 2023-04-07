@@ -27,7 +27,7 @@ In the picture below on the left we have a possible representation of a graph $G
 
 <b style="font-size: 16px">Definition 2</b> <br> 
 If $G = (V,E)$ is a direct graph, a direct path in G is a sequence of nodes $(v_0, v_1,...,v_n)$ such that $(v_i, v_{i+1}) \in E$ for each $i = 0,1,...,k−1$. We say that k is the length of the path. <br>
-If none of the nodes, with the possible exception of $v_0$ and $v_k$, appears in the sequence twice, the path is simple. If $v_0$ = $v_k$ the path is closed. A path that is simple and closed is called a cycle.
+If none of the nodes appear in the sequence twice, with the possible exception of $v_0$ and $v_k$, the path is simple. If $v_0$ = $v_k$ the path is closed. A <b>cycle</b> is a path that is both simple and closed.
 
 
 
@@ -77,16 +77,30 @@ def identifyGraph(G):
     Given a Graph, return a list of properties of the graph as a dictionary: 
         { "closed" : True/False, "simple", True/False }
     '''
+    ## YOUR CODE HERE
+    raise NotImplementedError()
+    
+```
+
+
+```python
+## SOLUTION
+
+def identifyGraph(G):
+    '''
+    Given a Graph, return a list of properties of the graph as a dictionary: 
+        { "closed" : True/False, "simple", True/False }
+    '''
     V = G[0]
     E = G[1]
     closed = True
     simple = True
     
     path = [e[0] for e in E]
-    if len(path) != len(set(path)):
+    if len(path) != len(set(path)): ## set(list) gets rid of all the repititions
         simple = False
         
-    if (path[0] != E[len(E)-1][1]):
+    if (path[0] != E[len(E)-1][1]): ## checking if first and last are equal
         closed = False
         
     properties = {
@@ -94,7 +108,7 @@ def identifyGraph(G):
         "simple": simple,
     }
     
-    return properties
+    return properties ## O(n)
     
 ```
 
@@ -140,46 +154,57 @@ Write a function that retuns the matrix representing the given graph.
 
 ```python
 def graph_to_matrix(G):
+    '''
+        This function takes in a Graph G as defined above, and returns a matrix equivalent as is described in 
+        Definition 3. The return must be of type Matrix.
+    '''
+    ## YOUR CODE HERE
+    raise NotImplementedError()
+```
+
+
+```python
+def graph_to_matrix(G):
+    '''
+        This function takes in a Graph G as defined above, and returns a matrix equivalent as is described in 
+        Definition 3. The return must be of type Matrix.
+    '''
     V = G[0]
     E = G[1]
     n = len(V)
-    A = Matrix(n, n, [0 for i in range(n^2)])
+    A = Matrix(n, n, [0 for i in range(n^2)]) ## set it to the zero matrix
 
     for i in range(n):
         for j in range(n):
             if (V[i], V[j]) in E:
                 A[i, j] = 1
     
-    return A
+    return A ## O(n^2)
 
-v1, v2, v3, v4, v5 = var("v1 v2 v3 v4 v5")
-G1 = ([v1, v2, v3, v4, v5], [(v1, v2), (v2, v5), (v5, v4), (v4, v3), (v3, v1)])
-pretty_print(graph_to_matrix(G1))
-
-## TODO:
-## add test
 ```
 
 
-<html><script type="math/tex; mode=display">\newcommand{\Bold}[1]{\mathbf{#1}}\left(\begin{array}{rrrrr}
-0 & 1 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 & 1 \\
-1 & 0 & 0 & 0 & 0 \\
-0 & 0 & 1 & 0 & 0 \\
-0 & 0 & 0 & 1 & 0
-\end{array}\right)</script></html>
+```python
+v1, v2, v3, v4, v5 = var("v1 v2 v3 v4 v5")
+G1 = ([v1, v2, v3, v4, v5], [(v1, v2), (v2, v5), (v5, v4), (v4, v3), (v3, v1)])
+correct_M = Matrix(5, 5, [0,1,0,0,0, 0,0,0,0,1, 1,0,0,0,0, 0,0,1,0,0, 0,0,0,1,0])
+assert graph_to_matrix(G1) == correct_M
+print("I'm going to get in touch with Google. They should hire you.")
+```
+
+    I'm going to get in touch with Google. They should hire you.
 
 
-A formal representation of the concept is given by the following formula. P and Q are pages of the web and we indicate with r(P) and r(Q) the ranks of the pages, namely their importance.
+A more accurate representation of the Graph $\rightarrow$ Matrix concept is given by the following formula: let P and Q be pages of the web, then we indicate with r(P) and r(Q) the ranks of the pages - in other words importance.
 <div style="width: 100%; text-align: center">
     $r(P) = \sum_{Q \rightarrow P} \frac{r(Q)}{|Q|}$
 </div>
-where $|Q|$ is the number of external links of the page $Q$ and the $Q \rightarrow P$ means that the summation is extended over the pages $Q$ that have a link to the page $P$. 
+where $|Q|$ is the number of outgoing links of the page $Q$ and the $Q \rightarrow P$ means that the summation is extended over the pages $Q$ that have a link to the page $P$.
 <br>
 <br>
 SO the fewer external links a page has the better it is for the ranking of $P$.
 
-We can give a matrix form to the equation. Let’s $\{P_1, P_2,..., P_n\}$ be the n pages on the web. We may define a transition matrix $A$, namely the matrix of the probabilities of a transition from a page to another page, in the following way: <br>
+We can give a matrix form to the equation. Let’s $\{P_1, P_2,..., P_n\}$ be the n pages on the web. We may define a  matrix $A$ as the matrix of the probabilities of a transition from a page to another page, in the following way: <br>
 <div>$a_{ij} = $ </div>
 <div style="margin-left: 23px">$=$ Prob$(P_j \rightarrow P_i) = $</div>
 <ul style="margin-left: 20px; margin-top: 0px">
@@ -199,14 +224,31 @@ Improve on the function above to include the new and more accurate formula.
 
 ```python
 def improved_graph_to_matrix(G):
+    '''
+        This function takes in a Graph G defined earlier and returns a matrix A that contains the probabilities
+        of transition from one page to another - as defined above. 
+        The return must be of type Matrix.
+    '''
+    ## YOUR CODE HERE
+    raise NotImplementedError()
+```
+
+
+```python
+def improved_graph_to_matrix(G):
+    '''
+        This function takes in a Graph G defined earlier and returns a matrix A that contains the probabilities
+        of transition from one page to another - as defined above. 
+        The return must be of type Matrix.
+    '''
     V = G[0]
     E = G[1]
     n = len(V)
     A = Matrix(QQ, n, n, [0 for i in range(n^2)])
     
-    fractions = []
+    fractions = [] ## we are going to store the probability for each page here
     for i in range(n):
-        total: int = 0
+        total: int = 0 ## counting total number of outgoing links
         for j in range(len(E)):
             if E[j][0] == V[i]:
                 total += 1
@@ -216,9 +258,9 @@ def improved_graph_to_matrix(G):
         for j in range(len(E)):
             if E[j][0] == V[i]:
                 pos = V.index(E[j][1])
-                A[pos, i] = fractions[i]
+                A[pos, i] = fractions[i] ## setting a_ij as the probability of landing on the page
     
-    return A
+    return A ## O(n^2)
 
 ```
 
@@ -238,7 +280,7 @@ print("All good, well done!")
 
 
 
-Our interest is on real eigenvalues $\lambda \in \mathbb{R}$ and associated real eigenvectors $v \in \mathbb{R}^n$. We shall indicate with:
+Let's look at real eigenvalues $\lambda \in \mathbb{R}$ and associated real eigenvectors $v \in \mathbb{R}^n$. We will indicate with:
 <ul style="margin-top: 0px">
     <li>$E(\lambda)$: eigenspace of the eigenvalue λ, that is the subspace of $\mathbb{R}^n$ spanned by the eigenvectors associated to $\lambda$.</li>
     <li>Sp$(A)$ the spectrum of the matrix $A$, that is the set of the eigenvalues of $A$.</li>
@@ -253,7 +295,7 @@ If $\lambda$ is an eigenvalue of $A$, its associated eigenspace $E(\lambda)$ is 
 
 
 <b style="font-size: 16px">Definition 4</b> <br>
-We define the eigenvalue of a matrix A the <b style="font-style: italic">dominant</b> eigenvalue as a real (not complex) eigenvalue that is strictly greater in absolute values than all other eigenvalues.
+We define the eigenvalue of a matrix A the <b style="font-style: italic">dominant</b> eigenvalue as a real (not complex) eigenvalue who's absolute value is greater than the absolute values of all the other eigenvalues.
 
 
 <b style="font-size: 16px">Theorem (Perron-Frobenius for positive matrices)</b> Let A be an n × n positive matrix. Then the following statements hold: <br>
@@ -293,17 +335,17 @@ Let's now calculate the eigenvalues, eigenvectors, and hence the eigenspace of A
 
 
 ```python
-calculations_right = A.eigenvectors_right()
-spec = [c[0] for c in calculations_right]
+calculations_right = A.eigenvectors_right() ## we've done this in labs
+spec = [c[0] for c in calculations_right] ## getting the eigenvalues
 print("spec(A) = ")
-pretty_print([round(c, 6) for c in spec])
+pretty_print([round(c, 6) for c in spec]) ## rounding them so they look nicer - don't round them at the core var or the calculations will be off
 
-eigenvectors = [c[1][0] for c in calculations_right]
+eigenvectors = [c[1][0] for c in calculations_right] ## right eigenvectors
 m_eigenvectors = []
 for i in range(3):
-    m_eigenvectors.append(round(eigenvectors[0][i], 6))
-    m_eigenvectors.append(round(eigenvectors[1][i], 6))
-    m_eigenvectors.append(round(eigenvectors[2][i], 6))
+    m_eigenvectors.append(round(eigenvectors[0][i], 6)) ## once again rounding - not at the core!
+    m_eigenvectors.append(round(eigenvectors[1][i], 6)) ## ~
+    m_eigenvectors.append(round(eigenvectors[2][i], 6)) ## ~
 M = Matrix(3, 3, m_eigenvectors)
 print("E(lambda) = ")
 pretty_print(M)
@@ -327,24 +369,24 @@ pretty_print(M)
 \end{array}\right)</script></html>
 
 
-So we can see that $ \lambda = 16.116844 $ is the simple dominant eigenvalue. And the associated eigenvector is positive meaning points 1, 2, and 3 from the Perron-Frobenius theorem hold.
+So we can see that $ \lambda = 16.116844 $ is the dominant eigenvalue. And the associated eigenvector is positive meaning points 1, 2, and 3 from the Perron-Frobenius theorem hold.
 
-We can also see that the other 2 eigenvectors are not all positive, which shows that point nnumber 4 also holds.
+We can also see that the other 2 eigenvectors are not all positive, which shows that point number 4 also holds.
 
-We will need to do some further calculations to prove that point number 5 holds. Let's try to calculate the matrix $vw^T$.
+We will need to do some further calculations to verify that point number 5 holds. Let's try to calculate the matrix $vw^T$ ($v$ = right eigenvector associated with dominant eigenvalue, $w$ = left eigenvector associated with dominant eigenvalue).
 
 
 ```python
 ## Let's start by finding the left eigenvectors:
-r = max([abs(i) for i in spec])
-calculations_left = A.eigenvectors_left()
+r = max([abs(i) for i in spec]) ## getting the dominant eigenvalue
+calculations_left = A.eigenvectors_left() 
 for i in calculations_left:
-    if i[0] == r:
+    if i[0] == r: ## getting the left eigenvector associated with the dominant eigenvalue
         max_eigenvector_left = i[1][0]
         break
 
 for i in calculations_right:
-    if i[0] == r:
+    if i[0] == r: ## getting the right eigenvector associated with the dominant eigenvalue
         max_eigenvector_right = i[1][0]
         break
 
@@ -359,17 +401,6 @@ pretty_print(v)
 vwT = v*wT
 pretty_print("v*w^T = ")
 pretty_print(vwT)
-        
-# eigenvectors_left = [c[1][0] for c in calculations_left]
-# # print(type(eigenvectors_left[0]))
-# m_eigenvectors_left = []
-# for i in range(3):
-#     m_eigenvectors_left.append(round(eigenvectors_left[0][i], 6))
-#     m_eigenvectors_left.append(round(eigenvectors_left[1][i], 6))
-#     m_eigenvectors_left.append(round(eigenvectors_left[2][i], 6))
-# M_left = Matrix(3, 3, m_eigenvectors_left)
-# print("E(lambda) = ")
-# pretty_print(M_left)
 
 
 
@@ -414,7 +445,7 @@ Let's now calculate the dreaded $\lim_{k \to \infty} (\frac{A}{r})^k$:
 
 
 ```python
-k = SR.var("k")
+k = SR.var("k") ## defining new var
 l = ((A/r)^k).apply_map(lambda x: lim(x, k=oo))
 pretty_print(l)
 
@@ -445,7 +476,7 @@ Let's remember what the theorem said:
     $\lim_{k \to \infty} (\frac{A}{r})^k = vw^T$ <b>where the right and left eigenvectors are normalized, so that $w^T v = 1$</b>. Moreover, the matrix $vw^T$ is the projection onto the eigenspace $E(r)$, the so called Perron projection.
 </div>
 
-That's right, we forgot to normalize them. For that, we are going to do the following trick: let's define $v$ as
+That's right, we forgot to normalize them. For that, we are going to do the following trick: let's redefine $v$ as
 <div style="width: 100%; text-align: center">
     $v = \frac{v}{v \cdot w^T}$
 </div>
@@ -509,7 +540,7 @@ print(l == vwT)
 
 Whoooray!
 
-To conclude the example, it’s immediate to verify point 6 of the thesis, as
+To conclude the example, it’s immediate to verify point 6 of the theorem, as
 <div style="width: 100%; text-align: center">
     $\min_{i} \sum_{j} a_{ij} = 6$  and  $\max_{i} \sum_{j} a_{ij} = 24$
 </div>
@@ -535,30 +566,60 @@ Write two functions:
 
 ```python
 def left_right_eigenvectors(A: Matrix):
-    
+    '''
+        Given a Matrix A, the function returns a tuple consisting of the dominant eigenvalue and the Matrix vw^T, 
+        where v is the right eigenvector associated with the dominant eigenvalue, and w is the left eigenvector 
+        associated with the dominant eigenvalue, and they satisfy that w^T*v = 1.
+        The return must be of type (r: float, M: Matrix).
+    '''
+    ## YOUR CODE HERE
+    raise NotImplementedError()
+
+
+def lim_A_r(A: Matrix, r: float):
+    '''
+        Takes in the matrix A and the dominant eigenvalue r and returns the matrix (A/r)^k as k -> oo.
+        The return type must be of type Matrix.
+    '''
+    ## YOUR CODE HERE
+    raise NotImplementedError()
+```
+
+
+```python
+def left_right_eigenvectors(A: Matrix):
+    '''
+        Given a Matrix A, the function returns a tuple consisting of the dominant eigenvalue and the Matrix vw^T, 
+        where v is the right eigenvector associated with the dominant eigenvalue, and w is the left eigenvector 
+        associated with the dominant eigenvalue, and they satisfy that w^T*v = 1.
+        The return must be of type (r: float, M: Matrix).
+    '''
     eigen_right = A.eigenvectors_right()
     eigen_left = A.eigenvectors_left()
     
-    max_eigenvalue: float = eigen_right[0][0]
-    max_eigenvector_right: Vector_rational_dense
-    max_eigenvector_left: Vector_rational_dense
-    eigenvector_dict_right = {}
-    eigenvector_dict_left = {}
-    for i in range(1, A.nrows()):
-        if abs(eigen_right[i][0]) > abs(max_eigenvalue):
+    max_eigenvalue: float = eigen_right[0][0] ## assinging dominant eigenvalue to the first one, then iterating to correct that
+    
+    max_eigenvector_right: Vector_rational_dense = eigen_right[0][1] ## assinging the first one
+    max_eigenvector_left: Vector_rational_dense = eigen_left[0][1]   ## ~
+    
+    eigenvector_dict_right = { max_eigenvalue : max_eigenvector_right, }
+    eigenvector_dict_left = { max_eigenvalue : max_eigenvector_left, }
+    
+    for i in range(1, A.nrows()): ## starting from 1 because we don't want to go over 0 again as we have already defined it above
+        if abs(eigen_right[i][0]) > abs(max_eigenvalue): ## checking if the new eigenvalue is bigger
             max_eigenvalue = eigen_right[i][0]
         
-        eigenvector_dict_right[eigen_right[i][0]] = eigen_right[i][1]
-        eigenvector_dict_left[eigen_left[i][0]] = eigen_left[i][1]
+        eigenvector_dict_right[eigen_right[i][0]] = eigen_right[i][1] ## adding to the dictionary
+        eigenvector_dict_left[eigen_left[i][0]] = eigen_left[i][1]    ## adding to the dictionary
     
     
-    max_eigenvector_right = eigenvector_dict_right[max_eigenvalue][0]
+    max_eigenvector_right = eigenvector_dict_right[max_eigenvalue][0] ## the actual right eigenvector associated with dominant eigenvalue
     eigenvector_right_matrix = Matrix(A.nrows(), 1, [i for i in max_eigenvector_right])
 
-    max_eigenvector_left = eigenvector_dict_left[max_eigenvalue][0]
+    max_eigenvector_left = eigenvector_dict_left[max_eigenvalue][0]   ## the actual left  eigenvector associated with dominant eigenvalue
     eigenvector_left_matrix = Matrix(1, A.nrows(), [i for i in max_eigenvector_left])
 
-    if max_eigenvector_left * max_eigenvector_right != 1:
+    if max_eigenvector_left * max_eigenvector_right != 1: ## checking if they are normalized
         max_eigenvector_right = max_eigenvector_right / (max_eigenvector_right * max_eigenvector_left)
 
 
@@ -568,6 +629,10 @@ def left_right_eigenvectors(A: Matrix):
 
 
 def lim_A_r(A: Matrix, r: float):
+    '''
+        Takes in the matrix A and the dominant eigenvalue r and returns the matrix (A/r)^k as k -> oo.
+        The return type must be of type Matrix.
+    '''
     k = SR.var("k")
     M = ((A/r)^k).apply_map(lambda x: lim(x, k=oo))
     return M
@@ -590,7 +655,7 @@ print("You are on fire")
 
 ## PageRank Algorithm
 
-The reason why the dominant eigenvalue and its corresponding eigenvector are important in the PageRank algo- rithm is going to appear now.
+We are now going to see the reason why the dominant eigenvalue and its corresponding eigenvector are important in the PageRank algorithm.
 <br>
 <br>
 Suppose we collect all the web page ranks in a vector r. We want to compute it in an iterative way, starting from the previous evaluation of r. At the beginning, let us assume that all the pages have the same rank. Using probability discussed in the <b>Graph $\rightarrow$ Matrix</b> section, we call the first iteration of r - the <b>uniform distribution vector</b>, and denote it $r^{(0)}$:
@@ -607,14 +672,17 @@ in terms of n pages $P_1, P_2,...,P_n$ of the web, and in particular for the i-t
 </div>
 BUT in matrix form, we write that as:
 <div style="width: 100%; text-align: center">
-    $r^{(1)} = Ar^{(0)}$ and<br>
+    $r^{(1)} = Ar^{(0)}$ <br>
+</div>
+and
+<div style="width: 100%; text-align: center">
     $r^{(k+1)} = Ar^{(k)} ~~~~~ k=0,1,...$
 </div>
 becomes the iterative sequence we use. 
 
 <br>
 <br>
-Now there exists a theorem that states that the limit of the iterative sequence concluded above is an eigenvector associated to the dominant eigenvalue and <b>the ranks of the web pages are the components of this normalized limit vector</b>!
+From here we rely on a theorem [1]  that states that the limit of the iterative sequence concluded above is an eigenvector associated to the dominant eigenvalue and <b>the ranks of the web pages are the components of this normalized limit vector</b>!
 
 <div style="margin-top: 50px;font-style: italic; font-size: 16px">And that's how the ranks of the pages are calculated using linear algebra (and a bit of graph theory and probability).</div>
 
@@ -623,7 +691,7 @@ Now there exists a theorem that states that the limit of the iterative sequence 
 
 ## References
 
-<ul>
+<ol>
     <li>Power iteration, at <a href="https://en.wikipedia.org/wiki/Power_iteration"> https://en.wikipedia.org/wiki/Power_iteration </a> and related pages</li>
     <br>
     <li>PageRank, at <a href="https://it.wikipedia.org/wiki/PageRank"> https://it.wikipedia.org/wiki/PageRank </a> and related pages</li>
@@ -632,5 +700,5 @@ Now there exists a theorem that states that the limit of the iterative sequence 
     <br>
     <li>H. Braden, I. Gordon, R. Gratwick, M. Hering, J. Martens, G. Nemes, A. Ranicki, Honours Algebra 2022-23, University of Edinburgh, 2022</li>
     
-</ul>
+</ol>
 
